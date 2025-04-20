@@ -1,47 +1,105 @@
-<script setup lang="ts">
-import HelloWorld from './components/HelloWorld.vue'
-import TheWelcome from './components/TheWelcome.vue'
+
+<script setup>
+import './assets/style.css'
+import { ref, useTemplateRef } from 'vue'
+import { useElementBounding } from '@vueuse/core'
+
+  const image = useTemplateRef('logo')
+  const { x, y, top, right, bottom, left, width, height } = useElementBounding(image)
+  const offsetY = ref(0)
+  const offsetX = ref(0)
+function onMousemove(e) {
+  const offsetX = e.clientX; //- left;
+  const offsetY = e.clientY; //- top;
+
+}
 </script>
 
 <template>
   <header>
-    <img alt="Vue logo" class="logo" src="./assets/logo.svg" width="125" height="125" />
-
     <div class="wrapper">
-      <HelloWorld msg="You did it!" />
+      <h1><span style="color:#d79921">euan@software-engineer</span>:<span style="color:#458588">~</span>$ ls ./WelcomePage</h1>
+      <div class="links">
+        <h3><a href="">Home.html</a></h3>
+        <h3><a href="">About.html</a></h3>
+        <h3><a href="">Pojects.html</a></h3>
+        <h3>Intro.py</h3>
+      </div>
+      <h1><span style="color:#d79921">euan@software-engineer</span>:<span style="color:#458588">~</span>$ python ./Intro.py</h1>
+      <div class="intro">
+        <h3>Software Engineer <span style="color:#cc241d">@</span> FutureRoots Enterprise</h3>
+        <h3>MSc Agriculturual Technology & Innovation <span style="color:#cc241d">@</span> RAU</h3>
+        <h3>BSc Computer Science <span style="color:#cc241d">@</span> Loughborough</h3>
+        <br><h3><a href="">Featured Projects</a></h3>
+        <h3><a href="">FutureRoots.app</a></h3>
+        <h3><a href="">Morris.web</a></h3>
+      </div>
     </div>
-  </header>
 
+    
+  </header>
+  <div class="images">
+      <img  @mousemove="onMousemove":style="{mask: `radial-gradient(circle at ${offsetX}px ${offsetY}px, transparent 10px, white 50px)`}"
+      alt="ASCII Fern" class="logo movearea" src="./assets/fern.svg" width="90%" height="auto" />
+      <img alt="ASCII Fern" class="me" src="./assets/me.svg" width="40%" height="auto" />
+    </div>
   <main>
-    <TheWelcome />
   </main>
 </template>
 
 <style scoped>
 header {
-  line-height: 1.5;
+  line-height:1.5;
 }
 
-.logo {
-  display: block;
-  margin: 0 auto 2rem;
+.wrapper{
+  min-height: 200px;
+  margin:0;
+  padding:10px;
+}
+
+.wrapper .links {
+  padding:5px; 
+  margin-right: 10rem;
+  display: inline-block;
+  display:flex;   
+  justify-content: space-between;
+  flex-flow:row wrap;
+}
+
+.spotlight {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  mask: radial-gradient(circle at center, transparent 10px, black 50px); /* Adjust radius as needed */
+}
+
+.movearea {
+  transition: 0.3s background-color ease;
 }
 
 @media (min-width: 1024px) {
   header {
-    display: flex;
     place-items: center;
-    padding-right: calc(var(--section-gap) / 2);
+    margin-top: 4rem;
   }
 
   .logo {
-    margin: 0 2rem 0 0;
+    translate: 0% 60%
   }
-
-  header .wrapper {
+  .me {
     display: flex;
     place-items: flex-start;
-    flex-wrap: wrap;
+    translate: 75% -155%;
+  }
+  .images {
+    display: inline-flexbox;
+  }
+
+  .wrapper{
+    font-family: "JetBrains Mono";
   }
 }
 </style>
