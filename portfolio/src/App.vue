@@ -8,10 +8,9 @@ import { useElementBounding } from '@vueuse/core'
   const { x, y, top, right, bottom, left, width, height } = useElementBounding(image)
   const offsetY = ref(0)
   const offsetX = ref(0)
-function onMousemove(e) {
-  const offsetX = e.clientX; //- left;
-  const offsetY = e.clientY; //- top;
-
+  function onMousemove(e) {
+    offsetX.value = e.clientX - left.value
+    offsetY.value = e.clientY - top.value
 }
 </script>
 
@@ -39,8 +38,8 @@ function onMousemove(e) {
     
   </header>
   <div class="images">
-      <img  @mousemove="onMousemove":style="{mask: `radial-gradient(circle at ${offsetX}px ${offsetY}px, transparent 10px, white 50px)`}"
-      alt="ASCII Fern" class="logo movearea" src="./assets/fern.svg" width="90%" height="auto" />
+      <img  ref="logo" @mousemove="onMousemove":style="{ mask: `radial-gradient(circle at ${offsetX}px ${offsetY}px, white 10%, rgba(0, 0, 0, 0.5) 50%)` }"
+      alt="ASCII Fern" class="logo" src="./assets/fern.svg" width="90%" height="auto" />
       <img alt="ASCII Fern" class="me" src="./assets/me.svg" width="40%" height="auto" />
     </div>
   <main>
@@ -65,19 +64,6 @@ header {
   display:flex;   
   justify-content: space-between;
   flex-flow:row wrap;
-}
-
-.spotlight {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  mask: radial-gradient(circle at center, transparent 10px, black 50px); /* Adjust radius as needed */
-}
-
-.movearea {
-  transition: 0.3s background-color ease;
 }
 
 @media (min-width: 1024px) {
